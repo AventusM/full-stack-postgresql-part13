@@ -1,62 +1,42 @@
-require('dotenv').config();
-const { Sequelize, DataTypes, Model } = require('sequelize');
 const express = require('express');
+require('express-async-errors');
 const app = express();
+
+const { PORT } = require('./util/config');
+const { connectToDatabase } = require('./util/db');
+
+const notesRouter = require('./controllers/notes');
+const blogsRouter = require('./controllers/blogs');
+
 app.use(express.json());
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-});
+app.use('/api/notes', notesRouter);
+app.use('/api/blogs', blogsRouter);
 
-class Blog extends Model {}
-Blog.init(
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    author: { type: DataTypes.TEXT, allowNull: true },
-    url: { type: DataTypes.TEXT, allowNull: false },
-    title: { type: DataTypes.TEXT, allowNull: false },
-    likes: { type: DataTypes.INTEGER, defaultValue: 0 },
-  },
-  { sequelize, underscored: true, timestamps: false, modelName: 'blog' },
-);
-Blog.sync();
+const errorHandler = (error, request, response, next) => {
+  console.log(error);
 
-app.get('/api/blogs', async (_req, res) => {
-  const blogs = await Blog.findAll();
-  res.json(blogs);
-});
-
-app.post('/api/blogs', async (req, res) => {
-  try {
-    const newBlog = await Blog.create(req.body);
-    return res.json(newBlog);
-  } catch (error) {
-    return res.status(400).json({ error });
+  if (
+    error.name === 'SequelizeValidationError' ||
+    error.name === 'SequelizeDatabaseError'
+  ) {
+    return response
+      .status(400)
+      .send({ type: error.name, message: error.message });
   }
-});
 
-app.delete('/api/blogs/:id', async (req, res) => {
-  try {
-    const deletedBlog = await Blog.destroy({
-      where: {
-        id: req.params.id,
-      },
-    });
-    return res.json({
-      message: 'Success!',
-      id: req.params.id,
-    });
-  } catch (error) {
-    return res.status(401).json({ error });
+  if (error.message === 'notFound') {
+    response.status(404).send({ error: 'Unknown endpoint. Path not found' });
   }
-});
+};
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.use(errorHandler);
+
+const start = async () => {
+  await connectToDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+start();
