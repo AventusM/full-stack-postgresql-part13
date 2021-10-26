@@ -39,6 +39,7 @@ Note.init(
   },
   { sequelize, underscored: true, timestamps: false, modelName: 'note' },
 );
+Note.sync();
 
 /* app.get('/api/notes', async (req, res) => {
   const notes = await sequelize.query('SELECT * FROM notes', {
@@ -49,7 +50,29 @@ Note.init(
 
 app.get('/api/notes', async (req, res) => {
   const notes = await Note.findAll();
+  console.log(JSON.stringify(notes, null, 2));
   res.json(notes);
+});
+
+app.get('/api/notes/:id', async (req, res) => {
+  const note = await Note.findByPk(req.params.id);
+  if (note) {
+    console.log(note.toJSON());
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.put('/api/notes/:id', async (req, res) => {
+  const note = await Note.findByPk(req.params.id);
+  if (note) {
+    note.important = req.body.important;
+    await note.save();
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
 });
 
 app.post('/api/notes', async (req, res) => {
