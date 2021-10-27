@@ -27,11 +27,23 @@ const blogFinder = async (req, _res, next) => {
 };
 
 router.get('/', async (req, res) => {
-  const where = {};
+  let where = {};
 
+  // 13.14 Examples with Op.and and Op.or https://sequelize.org/master/manual/model-querying-basics.html
   if (req.query.search) {
-    where.title = {
-      [Op.iLike]: '%' + req.query.search + '%', // Case insensitive
+    where = {
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: '%' + req.query.search + '%', // Case insensitive
+          },
+        },
+        {
+          author: {
+            [Op.iLike]: '%' + req.query.search + '%', // Case insensitive
+          },
+        },
+      ],
     };
   }
 
