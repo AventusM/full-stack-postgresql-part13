@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const { Note, User } = require('../models');
 const { SECRET } = require('../util/config');
@@ -26,12 +27,25 @@ const noteFinder = async (req, res, next) => {
 };
 
 router.get('/', async (req, res) => {
+  const where = {};
+
+  if (req.query.important) {
+    where.important = req.query.important === 'true';
+  }
+
+  if (req.query.search) {
+    where.content = {
+      [Op.substring]: req.query.search,
+    };
+  }
+
   const notes = await Note.findAll({
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
       attributes: ['name'], // This is basically the populate function of mongoose
     },
+    where,
   });
   res.json(notes);
 });
@@ -39,7 +53,11 @@ router.get('/', async (req, res) => {
 router.post('/', tokenExtractor, async (req, res) => {
   try {
     const user = await User.findByPk(req.decodedToken.id);
-    const note = await Note.create({ ...req.body, userId: user.id });
+    const note = await Note.create({
+      ...req.body,
+      userId: user.id,
+      date: new Date(),
+    });
     res.json(note);
   } catch (error) {
     return res.status(400).json({ error });

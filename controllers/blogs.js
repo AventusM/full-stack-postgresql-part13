@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const { Blog, User } = require('../models');
 const { SECRET } = require('../util/config');
@@ -25,13 +26,22 @@ const blogFinder = async (req, _res, next) => {
   next();
 };
 
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
+  const where = {};
+
+  if (req.query.search) {
+    where.title = {
+      [Op.iLike]: '%' + req.query.search + '%', // Case insensitive
+    };
+  }
+
   const blogs = await Blog.findAll({
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
       attributes: ['name', 'username'], // This is basically the populate function of mongoose
     },
+    where,
   });
   res.json(blogs);
 });
