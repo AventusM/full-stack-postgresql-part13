@@ -54,6 +54,7 @@ router.get('/', async (req, res) => {
       attributes: ['name', 'username'], // This is basically the populate function of mongoose
     },
     where,
+    order: [['likes', 'DESC']], // 13.15
   });
   res.json(blogs);
 });

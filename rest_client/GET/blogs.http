@@ -1,6 +1,5 @@
-#GET http://localhost:3001/api/blogs
+GET http://localhost:3001/api/blogs
 #GET http://localhost:3001/api/blogs?search=story2
 #GET http://localhost:3001/api/blogs?search=STORY2
-
-GET http://localhost:3001/api/blogs?search=title
+#GET http://localhost:3001/api/blogs?search=title
 #GET http://localhost:3001/api/blogs?search=Resilient
