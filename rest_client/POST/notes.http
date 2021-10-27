@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/notes
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjhhbnRvbm1AZ21haWwuY29tIiwiaWQiOjIsImlhdCI6MTYzNTMzNDcxN30.lluewCP8rMm420zA-8qrGUi2mpVPjgVYpKq5JRA8DLc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjhhbnRvbm1AZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTYzNTM0NDAxN30.F7Hvvyhjp9NT5SFUsr-GJDzOInAmZ7QVxepXztmlsw0
 
 {
-    "content": "Hello world! truee",
+    "content": "New note!!",
     "important": true
 }
