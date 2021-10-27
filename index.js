@@ -36,6 +36,12 @@ const errorHandler = (error, request, response, next) => {
       .send({ type: error.name, message: error.message });
   }
 
+  if (error.message === 'deletionIdMismatch') {
+    response
+      .status(400)
+      .send({ error: 'No chance my dude, go delete your own thing :)' });
+  }
+
   if (error.message === 'notFound') {
     response.status(404).send({ error: 'Unknown endpoint. Path not found' });
   }

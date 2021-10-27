@@ -30,7 +30,7 @@ router.get('/', async (_req, res) => {
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
-      attributes: ['name', 'username'],
+      attributes: ['name', 'username'], // This is basically the populate function of mongoose
     },
   });
   res.json(blogs);
@@ -54,9 +54,15 @@ router.get('/:id', blogFinder, async (req, res) => {
   }
 });
 
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', [blogFinder, tokenExtractor], async (req, res) => {
   if (req.blog) {
-    await req.blog.destroy();
+    const tokenUserId = req.decodedToken.id;
+    const blogUserId = req.blog.toJSON().userId;
+    if (tokenUserId === blogUserId) {
+      await req.blog.destroy();
+    } else {
+      throw Error('deletionIdMismatch');
+    }
   }
   res.status(204).end();
 });
