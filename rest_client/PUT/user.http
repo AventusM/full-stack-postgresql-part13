@@ -1,0 +1,8 @@
+PUT http://localhost:3001/api/users/theanton@live.com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFudG9uLm1vcm96QGhlbHNpbmtpLmZpIiwiaWQiOjIsImlhdCI6MTYzNTQzMTgxMX0.mZNC-3AMzRNemAD_B9Cv8KzH8MhnlE-OYf5ZiiZjxYg
+
+{
+  "username": "8antonm@gmail.com",
+  "disabled": false
+}

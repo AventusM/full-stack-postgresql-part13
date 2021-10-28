@@ -28,6 +28,7 @@ const errorHandler = (error, request, response, next) => {
     error.name === 'SequelizeDatabaseError'
   ) {
     // Input validation error (e.g. Attempted to create new user without email as username)
+    // Assumes that only 1 error in the current state...
     if (error.errors) {
       return response
         .status(400)

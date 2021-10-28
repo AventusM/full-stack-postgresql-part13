@@ -1,6 +1,15 @@
 const router = require('express').Router();
 
 const { User, Note, Blog } = require('../models');
+const { tokenExtractor } = require('../util/middleware');
+
+const isAdmin = async (req, res, next) => {
+  const user = await User.findByPk(req.decodedToken.id);
+  if (!user.admin) {
+    return res.status(401).json({ error: 'operation not permitted' });
+  }
+  next();
+};
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
@@ -21,7 +30,10 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/:username', async (req, res) => {
+// This functionality requires both username and disabled to be provided in the body
+// As material and tasks are put in the same space here.
+router.put('/:username', [tokenExtractor, isAdmin], async (req, res) => {
+  console.log('req params', req.params);
   const user = await User.findOne({
     where: {
       username: req.params.username, // Find by parameters
@@ -30,6 +42,7 @@ router.put('/:username', async (req, res) => {
 
   if (user) {
     user.username = req.body.username; // Assign new username from body
+    user.disabled = req.body.disabled; // Things from material
     await user.save();
     return res.json(user);
   } else {
