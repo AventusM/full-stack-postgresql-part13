@@ -59,6 +59,11 @@ router.put('/:username', [tokenExtractor, isAdmin], async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  let read = { [Op.in]: [true, false] };
+  if (req.query.read) {
+    read = req.query.read === 'true';
+  }
+
   const user = await User.findByPk(req.params.id, {
     include: [
       {
@@ -69,7 +74,11 @@ router.get('/:id', async (req, res) => {
         include: {
           model: Reading,
           as: 'readinglists',
-          attributes: { exclude: ['userId', 'blogId'] },
+          attributes: { exclude: ['blogId'] }, // Keep the userId to confirm that everything works
+          where: {
+            userId: req.params.id, // readinglists should have things only related to self instead of including others too lol
+            read, // 13.23
+          },
         },
       },
     ],
