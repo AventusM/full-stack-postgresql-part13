@@ -21,7 +21,7 @@ User.belongsToMany(Note, { through: UserNotes, as: 'markedNotes' }); // --> Mate
 Note.belongsToMany(User, { through: UserNotes, as: 'usersMarked' });
 
 User.belongsToMany(Blog, { through: Reading, as: 'readings' });
-Blog.belongsToMany(User, { through: Reading });
+Blog.belongsToMany(User, { through: Reading }); // Alias here?
 
 module.exports = {
   Note,

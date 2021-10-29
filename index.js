@@ -41,10 +41,13 @@ const errorHandler = (error, request, response, next) => {
       .send({ type: error.name, message: error.message });
   }
 
-  if (error.message === 'deletionIdMismatch') {
+  if (
+    error.message === 'deletionIdMismatch' ||
+    error.message === 'editIdMismatch'
+  ) {
     response
       .status(400)
-      .send({ error: 'No chance my dude, go delete your own thing :)' });
+      .send({ error: 'No chance my dude, go change your own thing :)' });
   }
 
   if (error.message === 'notFound') {
