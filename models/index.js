@@ -20,8 +20,13 @@ Team.belongsToMany(User, { through: Membership });
 User.belongsToMany(Note, { through: UserNotes, as: 'markedNotes' }); // --> Material example with markedNotes just before 13.19-13.23 excercises has notes that have no previous owner?
 Note.belongsToMany(User, { through: UserNotes, as: 'usersMarked' });
 
+// Testing: The best of both worlds: the Super Many-to-Many relationship
+//User.hasMany(Reading);
+//Reading.belongsTo(User);
+Blog.hasMany(Reading, { as: 'readinglists' });
+//Reading.belongsTo(Blog);
 User.belongsToMany(Blog, { through: Reading, as: 'readings' });
-Blog.belongsToMany(User, { through: Reading }); // Alias here?
+//Blog.belongsToMany(User, { through: Reading });
 
 module.exports = {
   Note,

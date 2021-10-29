@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 
 const { User, Note, Blog, Team, Reading } = require('../models');
 const { tokenExtractor } = require('../util/middleware');
@@ -41,7 +42,6 @@ router.post('/', async (req, res, next) => {
 // This functionality requires both username and disabled to be provided in the body
 // As material and tasks are put in the same space here.
 router.put('/:username', [tokenExtractor, isAdmin], async (req, res) => {
-  console.log('req params', req.params);
   const user = await User.findOne({
     where: {
       username: req.params.username, // Find by parameters
@@ -60,36 +60,18 @@ router.put('/:username', [tokenExtractor, isAdmin], async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const user = await User.findByPk(req.params.id, {
-    //attributes: { exclude: [''] }, // Exclude nothing(?) --> Possible bug in material
     include: [
-      /*       {
-        model: Note,
-        attributes: { exclude: ['userId'] },
-      }, */
-      /*       {
-        model: Note,
-        as: 'markedNotes', // markedNotes or marked_notes? Two related code snapshots just before 13.19-13.23 exercises differ
-        attributes: { exclude: ['userId'] },
-        through: { attributes: [] },
-        include: { model: User, attributes: ['name'] },
-      }, */
-      /*       {
-        model: Blog,
-        attributes: { exclude: ['userId'] },
-      }, */
       {
         model: Blog,
         as: 'readings',
-        //through: { attributes: [] }, Commented out to get somewhat similar output to 13.21.
         attributes: { exclude: ['userId'] },
-      },
-      /*       {
-        model: Team,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: [],
+        through: { attributes: [] },
+        include: {
+          model: Reading,
+          as: 'readinglists',
+          attributes: { exclude: ['userId', 'blogId'] },
         },
-      }, */
+      },
     ],
   });
   if (user) {
