@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/notes
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjhhbnRvbm1AZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTYzNTM0NDAxN30.F7Hvvyhjp9NT5SFUsr-GJDzOInAmZ7QVxepXztmlsw0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjhhbnRvbm1AZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTYzNTQ1MjM5MH0.NAw-XdPo0w1GVg_UuAzbGBI-kXp2NyikFVfAo3SwKmg
 
 {
-    "content": "New note!!",
-    "important": true
+    "content": "Not very important :)",
+    "important": false
 }

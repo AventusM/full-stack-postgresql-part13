@@ -10,6 +10,7 @@ const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 const blogsRouter = require('./controllers/blogs');
 const authorsRouter = require('./controllers/authors');
+const readingsRouter = require('./controllers/readings');
 
 app.use(express.json());
 
@@ -18,6 +19,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/authors', authorsRouter);
+app.use('/api/readinglists', readingsRouter);
 
 const errorHandler = (error, request, response, next) => {
   console.log(error);
@@ -46,7 +48,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   if (error.message === 'notFound') {
-    response.status(404).send({ error: 'Unknown endpoint. Path not found' });
+    response.status(404).send({ error: 'Not found' });
   }
 };
 
