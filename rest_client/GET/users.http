@@ -4,4 +4,7 @@
 
 #GET http://localhost:3001/api/users/1
 #GET http://localhost:3001/api/users/1?read=false
-GET http://localhost:3001/api/users/1?read=true
+#GET http://localhost:3001/api/users/1?read=true
+
+
+GET http://localhost:3001/api/users/

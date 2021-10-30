@@ -75,7 +75,7 @@ router.delete('/:id', [blogFinder, tokenExtractor], async (req, res) => {
   res.status(204).end();
 });
 
-router.put('/:id', blogFinder, async (req, res, next) => {
+router.put('/:id', [blogFinder, tokenExtractor], async (req, res, next) => {
   try {
     if (req.blog) {
       req.blog.likes = req.body.likes;

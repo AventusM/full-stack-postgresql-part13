@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjhhbnRvbm1AZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTYzNTUwNjE5N30.RWYHICOjgQkNK5Gr1MXjiWQ-XbJuQstGkCG-7d5OgQ4
 
 {
+    "token": "015b4ea1-b85c-467a-b329-c12b9c61875c",
     "year": 2020,
-    "author": "DannyBoyAbramovich",
+    "author": "MattiLuukkainen",
     "url": "#",
-    "title": "React18News"
+    "title": "PostgreSQLprettygood"
 }
