@@ -21,7 +21,7 @@
   "homepage": "https://github.com/AventusM/full-stack-postgresql-part13#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
